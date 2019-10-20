@@ -35,11 +35,14 @@ process gpuCall {
 
     script:
     if (params.GPU == "ON") {
+        
+        accelerator 1
+        
         """
 echo GPU > gpu.log
 env > env.log
 nvidia-smi &> nvidia.log
- find / -name 'libcuda*' &> libcuda.log
+find / -name 'libcuda*' &> libcuda.log
         """        
      	
     } else {
