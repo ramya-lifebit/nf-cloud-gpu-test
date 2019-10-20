@@ -25,11 +25,10 @@ if (params.resume) exit 1, "Are you making the classical --resume typo? Be caref
 // GPU maybe can be removed as param if there is a way to detect it
 if (params.GPU != "ON" && params.GPU != "OFF") exit 1, "Please specify ON or OFF in GPU processors are available"
 
-outputLog = "output"
 
 process gpuCall {
 	
-    publishDir outputLog, pattern: "*.log",  mode: 'copy' 
+    publishDir "$baseDir/ouput", mode: 'copy' 
             
     output:
     file ("*.log") into output
@@ -37,14 +36,18 @@ process gpuCall {
     script:
     if (params.GPU == "ON") {
         """
- 		env > env.log
- 		nvidia-smi &> nvidia.log
- 		find / -name 'libcuda*' &> libcuda.log
+echo GPU > gpu.log
+env > env.log
+nvidia-smi &> nvidia.log
+ find / -name 'libcuda*' &> libcuda.log
         """        
      	
     } else {
         """
- 		echo "nothing to do!" > output.log
+echo GPU > gpu.log
+env > env.log
+nvidia-smi &> nvidia.log
+find / -name 'libcuda*' &> libcuda.log
         """
    }
 }
@@ -70,7 +73,7 @@ else {
         """
         .stripIndent()
 
-        sendMail(to: params.email, subject: "Master of Pore execution", body: msg)
+        sendMail(to: params.email, subject: "NF GPU test", body: msg)
     }
 }
 
