@@ -29,11 +29,12 @@ outputLog = "output"
 
 process gpuCall {
 	
-	publishDir outputLog, pattern: "*.log",  mode: 'copy' 
+    publishDir outputLog, pattern: "*.log",  mode: 'copy' 
             
     output:
     file ("*.log") into output
 
+    script:
     if (params.GPU == "ON") {
         """
  		env > env.log
