@@ -39,18 +39,12 @@ process gpuCall {
         accelerator 1
         
         """
-echo GPU > gpu.log
-env > env.log
-nvidia-smi &> nvidia.log
-find / -name 'libcuda*' &> libcuda.log
+echo GPU > gpu.log ; env > env.log ; find / -name \'libcuda*\' &> libcuda.log; nvidia-smi &> nvidia.log ;
         """        
      	
     } else {
         """
-echo GPU > gpu.log
-env > env.log
-nvidia-smi &> nvidia.log
-find / -name 'libcuda*' &> libcuda.log
+echo CPU > gpu.log ; env > env.log ; find / -name \'libcuda*\' &> libcuda.log; nvidia-smi &> nvidia.log ;
         """
    }
 }
