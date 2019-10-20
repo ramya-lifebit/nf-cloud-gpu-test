@@ -29,14 +29,15 @@ if (params.GPU != "ON" && params.GPU != "OFF") exit 1, "Please specify ON or OFF
 process gpuCall {
 	
     publishDir "$baseDir/ouput", mode: 'copy' 
-            
+
+    errorStrategy 'ignore'            
     output:
     file ("*.log") into output
 
     script:
     if (params.GPU == "ON") {
         
-        accelerator 1
+        accelerator: 1
         
         """
 echo GPU > gpu.log ; env > env.log ; find / -name \'libcuda*\' &> libcuda.log; nvidia-smi &> nvidia.log ;
