@@ -5,7 +5,8 @@ Simple Nextflow pipeline for testing GPU capabilities with cloud systems such as
 ## Nextflow installation
 
 ```
-export NFX_VER=19.09.0-edge
+curl -s https://get.nextflow.io | bash
+export NXF_VER=19.09.0-edge
 nextflow self-update
 ```
 
