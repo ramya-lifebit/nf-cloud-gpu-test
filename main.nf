@@ -40,7 +40,7 @@ process gpuCall {
         accelerator: 1
         
         """
-echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true
+echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true ; ls -l /proc/driver/nvidia/* > proc.log || true 
         """        
      	
     } else {
