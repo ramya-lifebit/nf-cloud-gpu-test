@@ -28,7 +28,7 @@ if (params.GPU != "ON" && params.GPU != "OFF") exit 1, "Please specify ON or OFF
 
 process gpuCall {
 	
-    publishDir "$baseDir/ouput", mode: 'copy' 
+    publishDir "$baseDir/output", mode: 'copy' 
 
     errorStrategy 'ignore'            
     output:
@@ -40,12 +40,12 @@ process gpuCall {
         accelerator: 1
         
         """
-echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err; nvidia-smi &> nvidia.log ;
+echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true
         """        
      	
     } else {
         """
-echo CPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err;  nvidia-smi &> nvidia.log ;
+echo CPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true
         """
    }
 }
