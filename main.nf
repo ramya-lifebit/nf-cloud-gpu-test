@@ -26,6 +26,7 @@ if (params.resume) exit 1, "Are you making the classical --resume typo? Be caref
 if (params.GPU != "ON" && params.GPU != "OFF") exit 1, "Please specify ON or OFF in GPU processors are available"
 
 
+// TODO: To be changed to test CPU and GPU call properly
 process gpuCall {
 	
     publishDir "$baseDir/output", mode: 'copy' 
