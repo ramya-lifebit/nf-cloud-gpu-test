@@ -6,7 +6,7 @@ Simple Nextflow pipeline for testing GPU capabilities with cloud systems such as
 
 ```
 curl -s https://get.nextflow.io | bash
-export NXF_VER=19.09.0-edge
+export NXF_VER=21.04.3
 nextflow self-update
 ```
 
@@ -15,13 +15,16 @@ nextflow self-update
 With GPU
 
 ```
-nextflow run main.nf -bg -profile awsbatch -bucket-dir s3://frankfurt-nf/work --GPU ON &> log
+nextflow run main.nf -bg -profile awsbatch --GPU ON &> log.gpu
 ```
 
 Without GPU
 
 ```
-nextflow run main.nf -bg -profile awsbatch -bucket-dir s3://frankfurt-nf/work --GPU OFF &> log
+nextflow run main.nf -bg -profile awsbatch --GPU OFF &> log
 ```
 
+## TODO
+
+* Add Terraform scripts here
 
