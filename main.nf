@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 
-/* 
+/*
  * Define the pipeline parameters
  *
  */
@@ -28,31 +28,33 @@ if (params.GPU != "ON" && params.GPU != "OFF") exit 1, "Please specify ON or OFF
 
 // TODO: To be changed to test CPU and GPU call properly
 process gpuCall {
-	
-    publishDir "$baseDir/output", mode: 'copy' 
 
-    errorStrategy 'ignore'            
+    publishDir "$baseDir/output", mode: 'copy'
+
+    errorStrategy 'ignore'
     output:
     file ("*.log") into output
 
     script:
     if (params.GPU == "ON") {
-        
+
         accelerator: 1
-        
+
         """
-echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true ; ls -l /proc/driver/nvidia/* > proc.log || true 
-        """        
-     	
+echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true ; ls -l /proc/driver/nvidia/* > proc.log || true
+tensortest.py &> tensortest.log || true ;
+				"""
+
     } else {
         """
 echo CPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true
+tensortest.py &> tensortest.log || true ;
         """
    }
 }
 
 
-if (params.email == "yourmail@yourdomain" || params.email == "") { 
+if (params.email == "yourmail@yourdomain" || params.email == "") {
     log.info 'Skipping the email\n'
 }
 else {
@@ -80,5 +82,3 @@ workflow.onComplete {
     println "Pipeline BIOCORE@CRG completed at: $workflow.complete"
     println "Execution status: ${ workflow.success ? 'OK' : 'failed' }"
 }
-
-
