@@ -15,6 +15,7 @@ params.resume          = false
 log.info """
 
 GPU                       : ${params.GPU}
+container                 : ${params.container}
 email                     : ${params.email}
 """
 
@@ -22,11 +23,9 @@ email                     : ${params.email}
 if (params.help) exit 1
 if (params.resume) exit 1, "Are you making the classical --resume typo? Be careful!!!! ;)"
 
-// GPU maybe can be removed as param if there is a way to detect it
 if (params.GPU != "ON" && params.GPU != "OFF") exit 1, "Please specify ON or OFF in GPU processors are available"
 
 
-// TODO: To be changed to test CPU and GPU call properly
 process gpuCall {
 
     publishDir "$baseDir/output", mode: 'copy'
@@ -36,21 +35,11 @@ process gpuCall {
     file ("*.log") into output
 
     script:
-    if (params.GPU == "ON") {
-
-        accelerator: 1
-
-        """
-echo GPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true ; ls -l /proc/driver/nvidia/* > proc.log || true
+    """
+echo ${params.GPU} > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true ; ls -l /proc/driver/nvidia/* > proc.log || true
+nvcc --version &> nvcc.log || true ;
 tensortest.py &> tensortest.log || true ;
-				"""
-
-    } else {
-        """
-echo CPU > gpu.log ; env > env.log ; find / -name 'libcuda*' > libcuda.log 2> libcuda.err || true ; nvidia-smi &> nvidia.log || true
-tensortest.py &> tensortest.log || true ;
-        """
-   }
+		"""
 }
 
 
